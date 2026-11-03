@@ -1,24 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sistema de Estudos</title>
-</head>
-<body>
-  <h1>Sistema de Estudos — ENADE</h1>
-  <p>Faça login para começar a estudar.</p>
 
-  <form id="login">
-    <input type="email" id="email"
-           placeholder="E-mail" required>
+<script type="module">
+  import { createClient } from
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    <input type="password" id="senha"
-           placeholder="Senha" required>
+  const SUPABASE_URL = "COLE_SUA_PROJECT_URL";
+  const SUPABASE_KEY = "COLE_SUA_PUBLISHABLE_KEY";
 
-    <button type="submit">Entrar</button>
-  </form>
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-  <p id="mensagem"></p>
-</body>
-</html>
+  const formulario = document.getElementById("login");
+  const mensagem = document.getElementById("mensagem");
+
+  formulario.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("senha").value;
+
+    mensagem.textContent = "Entrando...";
+
+    const { data, error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) {
+      mensagem.textContent = "Não foi possível entrar. Verifique suas credenciais.";
+      return;
+    }
+
+    formulario.hidden = true;
+    mensagem.textContent = "Login realizado com sucesso!";
+  });
+</script>
