@@ -21,6 +21,12 @@
 
   <p id="mensagem"></p>
 
+  <section id="area-questao" hidden>
+  <h2 id="titulo-questao"></h2>
+  <p id="enunciado"></p>
+  <div id="alternativas"></div>
+  </section>
+
   <script type="module">
   import { createClient } from
     "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -70,6 +76,21 @@ if (erroQuestoes) {
   console.log("Questões carregadas:", questoes);
   mensagem.textContent =
     `Login realizado! ${questoes.length} questão(ões) encontrada(s).`;
+
+  if (questoes.length > 0) {
+  const questao = questoes[0];
+
+  document.getElementById("area-questao").hidden = false;
+
+  document.getElementById("titulo-questao").textContent =
+    `ENADE ${questao.ano} — Questão ${questao.numero_questao}`;
+
+  document.getElementById("enunciado").textContent =
+    questao.enunciado;
+
+  document.getElementById("alternativas").textContent =
+    JSON.stringify(questao.opcoes, null, 2);
+}
 }
   });
     
