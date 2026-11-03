@@ -58,6 +58,20 @@
 
     formulario.hidden = true;
     mensagem.textContent = "Login realizado com sucesso!";
+    const { data: questoes, error: erroQuestoes } = await supabase
+  .from("questoes")
+  .select("id, ano, numero_questao, enunciado, opcoes")
+  .eq("ano", 2017)
+  .order("numero_questao");
+
+if (erroQuestoes) {
+  mensagem.textContent = "Erro ao carregar questões.";
+  console.error(erroQuestoes);
+} else {
+  console.log("Questões carregadas:", questoes);
+  mensagem.textContent =
+    `Login realizado! ${questoes.length} questão(ões) encontrada(s).`;
+}
   });
     
 </script>
